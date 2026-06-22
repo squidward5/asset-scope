@@ -2,7 +2,8 @@
   <img src="https://raw.githubusercontent.com/squidward5/asset-scope/refs/heads/main/asset scope.png" width="600">
 </p>
 
-# Loadstring
+# loadstring
+<hr>
 <pre>
   <span>loadstring(game:HttpGet("https://raw.githubusercontent.com/squidward5/asset-scope/refs/heads/main/assetscope.lua"))()</span>
 </pre>
