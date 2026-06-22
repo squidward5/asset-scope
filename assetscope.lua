@@ -7,6 +7,13 @@ local Lighting = game:GetService("Lighting")
 local player = Players.LocalPlayer
 local cancelSaveAll = false
 local savingAll = false
+if not isfolder("assetscope") then
+    makefolder("assetscope")
+end
+
+writefile("assetscope/logo.png", game:HttpGet("https://raw.githubusercontent.com/squidward5/asset-scope/refs/heads/main/logo.png"))
+
+local image = getcustomasset("assetscope/logo.png")
 
 local function applyGlassGradient(instance)
     local uigradient = Instance.new("UIGradient")
@@ -75,8 +82,8 @@ local function getImageAsset(obj)
     return assets
 end
 
-local PROJECT_FOLDER = "AssetScope"
-local IMAGE_FOLDER = PROJECT_FOLDER .. "/Images"
+local PROJECT_FOLDER = "assetscope"
+local IMAGE_FOLDER = PROJECT_FOLDER .. "/images"
 local CONFIG_FILE = PROJECT_FOLDER .. "/config.json"
 
 local function ensureFolders()
@@ -260,16 +267,16 @@ brandingContainer.Size = UDim2.new(1, 0, 0, 60)
 brandingContainer.BackgroundTransparency = 1
 brandingContainer.Parent = sideBar
 
-local brandTitle = Instance.new("TextLabel")
-brandTitle.Size = UDim2.new(1, -20, 1, 0)
-brandTitle.Position = UDim2.fromOffset(16, 0)
+local brandTitle = Instance.new("ImageLabel")
+brandTitle.Size = UDim2.new(1.1, 0, 1, 0)
+brandTitle.Position = UDim2.fromOffset(5, 7)
 brandTitle.BackgroundTransparency = 1
-brandTitle.Text = "asset scope"
-brandTitle.Font = Enum.Font.GothamBold
-brandTitle.TextSize = 16
-brandTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
-brandTitle.TextXAlignment = Enum.TextXAlignment.Left
+brandTitle.Image = getcustomasset("assetscope/logo.png")
 brandTitle.Parent = brandingContainer
+
+local brandTitleUIScale = Instance.new("UIScale")
+brandTitleUIScale.Scale = 0.8
+brandTitleUIScale.Parent = brandTitle
 
 local filterScroller = Instance.new("ScrollingFrame")
 filterScroller.Name = "FilterScroller"
@@ -519,7 +526,6 @@ local categoryCounts = {
     Beam = 0,
     Trail = 0,
     Mesh = 0,
-    Surfaces = 0,
     Sky = 0,
     Sound = 0,
     Remotes = 0,
@@ -1059,7 +1065,6 @@ game.DescendantAdded:Connect(function(obj)
     for _, image in ipairs(getImageAsset(obj)) do createEntry(obj, image) end
     if #entries > oldEntryCount then
         refreshSearch()
-        brandTitle.Text = "asset scope"
     end
 end)
 
@@ -1073,7 +1078,6 @@ task.spawn(function()
     table.sort(batch, function(a, b) return a.obj.Name < b.obj.Name end)
     for _, item in ipairs(batch) do createEntry(item.obj, item.image) end
     refreshSearch()
-    brandTitle.Text = "asset scope"
 end)
 
 saveAllBtn.MouseButton1Click:Connect(function()
@@ -1147,7 +1151,6 @@ local categories = {
     "Beam",
     "Trail",
     "Mesh",
-    "Surfaces",
     "Sky",
     "Sound",
     "Remotes",
