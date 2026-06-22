@@ -12,7 +12,9 @@ This script is intended for extracting game assets from Roblox games. It constan
 This script also allows you to dump all images into your executor's workspace, save separate images, see where the asset came from, copy paths (ex: game.Workspace.SoundEffect1), copy names of the asset, copy ids (ex: rbxassetid://1234567890), show an image preview of the image, view the asset with the CurrentCamera, execute remote events/functions, and see the type of the asset.
 <br>
 
-<header>Showcase of the script in Murder Mystery 2</header>
+<pre>
+  <span>Showcase of the script in Murder Mystery 2</span>
+</pre>
 <p align="center">
   <img src="https://raw.githubusercontent.com/squidward5/asset-scope/refs/heads/main/mm2 example" width="600">
 </p>
