@@ -4,5 +4,5 @@
 
 # Loadstring
 <pre>
-  loadstring(game:HttpGet("https://raw.githubusercontent.com/squidward5/asset-scope/refs/heads/main/assetscope.lua"))()
+  <span>loadstring(game:HttpGet("https://raw.githubusercontent.com/squidward5/asset-scope/refs/heads/main/assetscope.lua"))()</span>
 </pre>
