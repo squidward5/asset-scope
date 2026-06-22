@@ -8,7 +8,7 @@
 </pre>
 
 This script is intended for extracting game assets from Roblox games. It constantly updates every time a new asset is found.
-<hl>
+<hr>
 This script also allows you to dump all images into your executor's workspace, save separate images, see where the asset came from, copy paths (ex: game.Workspace.SoundEffect1), copy names of the asset, copy ids (ex: rbxassetid://1234567890), show an image preview of the image, view the asset with the CurrentCamera, execute remote events/functions, and see the type of the asset.
 <br>
 
