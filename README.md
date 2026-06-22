@@ -15,7 +15,7 @@ This script also allows you to dump all images into your executor's workspace, s
 
 # Showcase of the script in Murder Mystery 2:
 
-<p align="center">
+<p align="center" style="border-radius: 12px;">
   <img src="https://raw.githubusercontent.com/squidward5/asset-scope/refs/heads/main/mm2 example.png" width="800">
 </p>
 
