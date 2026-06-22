@@ -63,6 +63,6 @@ This script also allows you to dump all images into your executor's workspace, s
   <span>• Video</span>
   <span>• SoundId</span>
   <span>• (and raw asset IDs parsed from any rbxassetid:// string)</span>
-
+</pre>
 # You may encounter bugs. If you do, just re-execute the script and it should be working again.
 </pre>
