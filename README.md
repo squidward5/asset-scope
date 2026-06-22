@@ -3,4 +3,6 @@
 </p>
 
 # Loadstring
-```loadstring(game:HttpGet("https://raw.githubusercontent.com/squidward5/asset-scope/refs/heads/main/assetscope.lua"))()```
+<pre>
+  loadstring(game:HttpGet("https://raw.githubusercontent.com/squidward5/asset-scope/refs/heads/main/assetscope.lua"))()
+</pre>
