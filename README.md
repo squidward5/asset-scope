@@ -1,71 +1,75 @@
-<p align="center">
-  <img src="https://raw.githubusercontent.com/squidward5/asset-scope/refs/heads/main/asset scope.png" width="600">
-</p>
-
-# Loadstring
-<pre>
-  <span>loadstring(game:HttpGet("https://raw.githubusercontent.com/squidward5/asset-scope/refs/heads/main/assetscope.lua"))()</span>
-</pre>
-
-This script is intended for extracting game assets from Roblox games. It constantly updates every time a new asset is found.
-<hr>
-This script also allows you to dump all images into your executor's workspace, save separate images, see where the asset came from, copy paths (ex: game.Workspace.SoundEffect1), copy names of the asset, copy ids (ex: rbxassetid://1234567890), show an image preview of the image, view the asset with the CurrentCamera, execute remote events/functions, and see the type of the asset.
-<hr>
-
-
-# ⚠️ WARNING! ⚠️: I am not responsible for you getting banned off of Roblox or any game in general. Use this at your own risk. To be extra safe, use a HWID spoofer and a VPN for maximum security.
-
-
-# Showcase of the script in Murder Mystery 2:
+# Asset Scope
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/squidward5/asset-scope/refs/heads/main/mm2 example.png" width="800" style="border-radius: 12px;">
+  <img src="https://raw.githubusercontent.com/squidward5/asset-scope/refs/heads/main/asset%20scope.png" width="700">
 </p>
 
-# This is a list of what it grabs:
+<p align="center">
+  <b>A real-time Roblox asset discovery and extraction tool.</b>
+</p>
 
-<pre>
-  <span>• ImageLabel</span>
-  <span>• ImageButton</span>
-  <span>• Decal</span>
-  <span>• Texture</span>
-  <span>• ParticleEmitter</span>
-  <span>• Trail</span>
-  <span>• Beam</span>
-  <span>• MeshPart</span>
-  <span>• SpecialMesh</span>
-  <span>• SurfaceAppearance</span>
-  <span>• Sky</span>
-  <span>• VideoFrame</span>
-  <span>• ImageHandleAdornment</span>
-  <span>• Handle</span>
-  <span>• ArcHandle</span>
-  <span>• Sound</span>
-  <span>• RemoteEvent</span>
-  <span>• RemoteFunction</span>
-  <span>• EditableImage</span>
-</pre>
+---
 
-# And these are the asset fields it extracts from them:
+## Loadstring
 
-<pre>
-  <span>• Image</span>
-  <span>• Texture</span>
-  <span>• TextureID</span>
-  <span>• TextureId</span>
-  <span>• ColorMap</span>
-  <span>• NormalMap</span>
-  <span>• RoughnessMap</span>
-  <span>• MetalnessMap</span>
-  <span>• SkyboxBk</span>
-  <span>• SkyboxDn</span>
-  <span>• SkyboxFt</span>
-  <span>• SkyboxLf</span>
-  <span>• SkyboxRt</span>
-  <span>• SkyboxUp</span>
-  <span>• Video</span>
-  <span>• SoundId</span>
-  <span>• (and raw asset IDs parsed from any rbxassetid:// string)</span>
-</pre>
-# You may encounter bugs. If you do, just re-execute the script and it should be working again.
-</pre>
+```lua
+loadstring(game:HttpGet("https://raw.githubusercontent.com/squidward5/asset-scope/refs/heads/main/assetscope.lua"))()
+```
+
+---
+
+## What is Asset Scope?
+
+Asset Scope is a powerful Roblox asset scanner that continuously monitors a game and discovers assets as they appear.
+
+Unlike traditional asset dumpers, Asset Scope updates in real time and provides detailed information about where assets came from, what type they are, and how they are being used inside the game.
+
+Whether you're researching assets, inspecting game resources, locating UI elements, finding sounds, viewing skyboxes, or analyzing remotes, Asset Scope puts everything in one place.
+
+---
+
+## Features
+
+- 🔍 Real-time asset discovery
+- ⚡ Live updates while playing
+- 🖼️ Built-in image previews
+- 🎥 View assets with CurrentCamera
+- 💾 Save individual assets
+- 📦 Dump all discovered assets
+- 📋 Copy asset IDs instantly
+- 📂 Copy full instance paths
+- 🏷️ Copy instance names
+- 🔎 Locate the source instance
+- 📡 RemoteEvent inspection
+- 📡 RemoteFunction inspection
+- 🧩 Automatic asset type detection
+- 🎨 SurfaceAppearance support
+- 🌌 Skybox support
+- 🔊 Sound support
+- 🎬 Video support
+
+---
+
+## Supported Objects
+
+Asset Scope scans:
+
+- ImageLabel
+- ImageButton
+- Decal
+- Texture
+- ParticleEmitter
+- Trail
+- Beam
+- MeshPart
+- SpecialMesh
+- SurfaceAppearance
+- Sky
+- VideoFrame
+- ImageHandleAdornment
+- Handle
+- ArcHandle
+- Sound
+- RemoteEvent
+- RemoteFunction
+- EditableImage
