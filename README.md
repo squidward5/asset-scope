@@ -13,6 +13,9 @@ This script also allows you to dump all images into your executor's workspace, s
 <hr>
 
 
+# ⚠️ WARNING! ⚠️: I am not responsible for you getting banned off of Roblox or any game in general. Use this at your own risk. To be extra safe, use a HWID spoofer and a VPN for maximum security.
+
+
 # Showcase of the script in Murder Mystery 2:
 
 <p align="center">
