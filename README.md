@@ -73,3 +73,20 @@ Asset Scope scans:
 - RemoteEvent
 - RemoteFunction
 - EditableImage
+
+## Requirements
+
+Your executor must support:
+
+- loadstring
+- game:HttpGet
+- writefile
+- readfile
+- isfile
+- isfolder
+- makefolder
+- request
+- getcustomasset
+- setclipboard (optional)
+
+Executors such as Potassium, Volt, and other high UNC & sUNC should work fine.
