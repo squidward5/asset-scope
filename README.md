@@ -9,13 +9,13 @@
 </p>
 
 <p align="center">
-  <b>Example of Asset Scope in RIVALS</b>
   <img src="https://raw.githubusercontent.com/squidward5/asset-scope/refs/heads/main/rivals%20example.png" width="500">
+  <b>Example of Asset Scope in RIVALS</b>
 </p>
 
 <p align="center">
-  <b>Example of Asset Scope in Murder Mystery 2</b>
   <img src="https://raw.githubusercontent.com/squidward5/asset-scope/refs/heads/main/mm2%20example.png" width="500">
+  <b>Example of Asset Scope in Murder Mystery 2</b>
 </p>
 
 ## Loadstring
