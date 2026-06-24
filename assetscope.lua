@@ -4,6 +4,39 @@ local HttpService = game:GetService("HttpService")
 local TweenService = game:GetService("TweenService")
 local Lighting = game:GetService("Lighting")
 
+local function getAssetUsage(assetId)
+    local results = {}
+
+    for _, entry in ipairs(entries) do
+        if tostring(entry.AssetId) == tostring(assetId) then
+            table.insert(results, {
+                Name = entry.Name,
+                Path = entry.Path,
+                Instance = entry.Instance
+            })
+        end
+    end
+
+    return results
+end
+
+local function getAnimationAsset(obj)
+    local assets = {}
+
+    if obj:IsA("Animation") then
+        local id = extractAssetId(obj.AnimationId)
+
+        if id ~= "" then
+            table.insert(assets, {
+                Type = "Animation",
+                Id = id
+            })
+        end
+    end
+
+    return assets
+end
+
 local player = Players.LocalPlayer
 local cancelSaveAll = false
 local savingAll = false
@@ -48,6 +81,7 @@ end
 
 local function getImageAsset(obj)
     local assets = {}
+    
     local function add(value)
         if typeof(value) ~= "string" then return end
         local id = extractAssetId(value)
@@ -61,24 +95,60 @@ local function getImageAsset(obj)
         return assets
     end
 
-    if obj:IsA("ImageLabel") or obj:IsA("ImageButton") then add(obj.Image) end
-    if obj:IsA("Decal") or obj:IsA("Texture") or obj:IsA("ParticleEmitter") or obj:IsA("Trail") or obj:IsA("Beam") then add(obj.Texture) end
-    if obj:IsA("MeshPart") then add(obj.TextureID) end
-    if obj:IsA("SpecialMesh") then add(obj.TextureId) end
+    if obj:IsA("ImageLabel") or obj:IsA("ImageButton") then 
+        add(obj.Image) 
+    end
+
+    if obj:IsA("Decal") or obj:IsA("Texture") or obj:IsA("ParticleEmitter") or obj:IsA("Trail") or obj:IsA("Beam") then 
+        add(obj.Texture) 
+    end
+
+    if obj:IsA("MeshPart") then 
+        add(obj.TextureID) 
+    end
+    if obj:IsA("SpecialMesh") then 
+        add(obj.TextureId) 
+    end
+
     if obj:IsA("SurfaceAppearance") then
-        add(obj.ColorMap) add(obj.NormalMap) add(obj.RoughnessMap) add(obj.MetalnessMap)
+        add(obj.ColorMap) 
+        add(obj.NormalMap) 
+        add(obj.RoughnessMap) 
+        add(obj.MetalnessMap)
     end
+
     if obj:IsA("Sky") then
-        add(obj.SkyboxBk) add(obj.SkyboxDn) add(obj.SkyboxFt) add(obj.SkyboxLf) add(obj.SkyboxRt) add(obj.SkyboxUp)
+        add(obj.SkyboxBk) 
+        add(obj.SkyboxDn) 
+        add(obj.SkyboxFt) 
+        add(obj.SkyboxLf) 
+        add(obj.SkyboxRt) 
+        add(obj.SkyboxUp)
     end
-    if obj:IsA("VideoFrame") then add(obj.Video) end
-    if obj:IsA("ImageHandleAdornment") then add(obj.Image) end
-    if obj:IsA("Handles") or obj:IsA("ArcHandles") then add(obj.TextureId) end
-    if obj:IsA("Sound") then add(obj.SoundId) end
+
+    if obj:IsA("VideoFrame") then 
+        add(obj.Video) 
+    end
+
+    if obj:IsA("Animation") then
+        add(obj.AnimationId)
+    end
+
+    if obj:IsA("ImageHandleAdornment") then 
+        add(obj.Image) 
+    end
+    if obj:IsA("Handles") or obj:IsA("ArcHandles") then 
+        add(obj.TextureId) 
+    end
+
+    if obj:IsA("Sound") then 
+        add(obj.SoundId) 
+    end
 
     pcall(function()
         if obj:IsA("EditableImage") then add(obj.Image) end
     end)
+
     return assets
 end
 
@@ -223,6 +293,113 @@ local function previewImagePopup(imageStr, titleName)
     Instance.new("UICorner", mainImg).CornerRadius = UDim.new(0, 6)
 end
 
+local function previewAnimationPopup(animationId, titleName)
+    local existing = gui:FindFirstChild("previewpopup")
+    if existing then existing:Destroy() end
+
+    local popupFrame = Instance.new("Frame")
+    popupFrame.Name = "previewpopup"
+    popupFrame.Size = UDim2.fromOffset(400, 430)
+    popupFrame.Position = UDim2.fromScale(0.5, 0.5)
+    popupFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+    popupFrame.BackgroundColor3 = Color3.fromRGB(12, 12, 16)
+    popupFrame.BorderSizePixel = 0
+    popupFrame.Draggable = true
+    popupFrame.Active = true
+    popupFrame.Selectable = true
+    popupFrame.ZIndex = 5
+    popupFrame.Parent = gui
+
+    Instance.new("UICorner", popupFrame).CornerRadius = UDim.new(0, 10)
+    local stroke = Instance.new("UIStroke", popupFrame)
+    stroke.Color = Color3.fromRGB(255, 255, 255)
+    stroke.Transparency = 0.85
+
+    local topText = (titleName or "animation"):lower()
+    if #topText > 45 then topText = topText:sub(1, 45) .. "..." end
+
+    local topLabel = Instance.new("TextLabel")
+    topLabel.Size = UDim2.new(1, -40, 0, 30)
+    topLabel.Position = UDim2.fromOffset(15, 5)
+    topLabel.BackgroundTransparency = 1
+    topLabel.Text = topText
+    topLabel.Font = Enum.Font.GothamBold
+    topLabel.TextSize = 12
+    topLabel.TextColor3 = Color3.fromRGB(200, 200, 210)
+    topLabel.TextXAlignment = Enum.TextXAlignment.Left
+    topLabel.ZIndex = 5
+    topLabel.Parent = popupFrame
+
+    local closePopup = Instance.new("TextButton")
+    closePopup.Size = UDim2.fromOffset(24, 24)
+    closePopup.Position = UDim2.new(1, -34, 0, 8)
+    closePopup.BackgroundTransparency = 1
+    closePopup.Text = "×"
+    closePopup.Font = Enum.Font.GothamBold
+    closePopup.TextSize = 18
+    closePopup.TextColor3 = Color3.fromRGB(150, 150, 160)
+    closePopup.ZIndex = 5
+    closePopup.Parent = popupFrame
+    closePopup.MouseButton1Click:Connect(function() popupFrame:Destroy() end)
+
+    local viewportFrame = Instance.new("ViewportFrame")
+    viewportFrame.Size = UDim2.fromOffset(370, 370)
+    viewportFrame.Position = UDim2.fromOffset(15, 45)
+    viewportFrame.BackgroundColor3 = Color3.fromRGB(5, 5, 8)
+    viewportFrame.BackgroundTransparency = 0.2
+    viewportFrame.ZIndex = 5
+    viewportFrame.Parent = popupFrame
+    Instance.new("UICorner", viewportFrame).CornerRadius = UDim.new(0, 6)
+
+    local worldModel = Instance.new("WorldModel")
+    worldModel.Parent = viewportFrame
+
+    local vpCamera = Instance.new("Camera")
+    viewportFrame.CurrentCamera = vpCamera
+    vpCamera.Parent = viewportFrame
+
+    local playerChar = player.Character
+    if playerChar then
+        playerChar.Archivable = true
+        local rigClone = playerChar:Clone()
+        playerChar.Archivable = false
+        
+        for _, desc in ipairs(rigClone:GetDescendants()) do
+            if desc:IsA("LuaSourceContainer") or desc:IsA("Script") or desc:IsA("LocalScript") then
+                desc:Destroy()
+            end
+        end
+        
+        rigClone.Parent = worldModel
+        local hrp = rigClone:FindFirstChild("HumanoidRootPart")
+        local humanoid = rigClone:FindFirstChildOfClass("Humanoid")
+        
+        if hrp and humanoid then
+            hrp.CFrame = CFrame.new(0, 0, 0)
+            vpCamera.CFrame = CFrame.new(Vector3.new(0, 1.5, -6), hrp.Position + Vector3.new(0, 0.5, 0))
+            
+            local animator = humanoid:FindFirstChildOfClass("Animator") or Instance.new("Animator", humanoid)
+            local animObj = Instance.new("Animation")
+            animObj.AnimationId = "rbxassetid://" .. tostring(animationId)
+            
+            local success, track = pcall(function() return animator:LoadAnimation(animObj) end)
+            if success and track then
+                track.Looped = true
+                track:Play()
+                
+                popupFrame.Destroying:Connect(function()
+                    track:Stop()
+                    track:Destroy()
+                end)
+            else
+                topLabel.Text = topLabel.Text .. " (failed to load anim)"
+            end
+        end
+    else
+        topLabel.Text = topLabel.Text .. " (no character found)"
+    end
+end
+
 local mainFrame = Instance.new("Frame")
 mainFrame.Name = "MainFrame"
 mainFrame.Size = UDim2.fromOffset(920, 670)
@@ -316,6 +493,17 @@ Instance.new("UICorner", saveAllBtn).CornerRadius = UDim.new(0, 8)
 local saStroke = Instance.new("UIStroke", saveAllBtn)
 saStroke.Color = Color3.fromRGB(255, 255, 255)
 saStroke.Transparency = 0.85
+
+local usageBtn = Instance.new("TextButton")
+usageBtn.Size = UDim2.new(0, 60, 0, 22)
+usageBtn.Text = "used by"
+usageBtn.Parent = entryFrame
+usageBtn.Font = Enum.Font.GothamBold
+usageBtn.TextSize = 12
+usageBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+usageBtn.AutoButtonColor = false
+Instance.new("UICorner", usageBtn).CornerRadius = UDim.new(0, 8)
+
 
 local workSpace = Instance.new("Frame")
 workSpace.Name = "WorkSpace"
@@ -531,6 +719,7 @@ local categoryCounts = {
     Remotes = 0,
     Video = 0,
     Handles = 0,
+    Animation = 0,
     Other = 0
 }
 
@@ -561,6 +750,9 @@ local function getCategory(obj)
 
     elseif obj:IsA("VideoFrame") then
         return "Video"
+    
+    elseif obj:IsA("Animation") then
+        return "Animation"
 
     elseif obj:IsA("ImageHandleAdornment") or obj:IsA("Handles") or obj:IsA("ArcHandles") then
         return "Handles"
@@ -621,18 +813,73 @@ local function createEntry(obj, image)
     itemStroke.Color = Color3.fromRGB(255, 255, 255)
     itemStroke.Transparency = 0.94
 
-    local preview = Instance.new("ImageLabel")
-    preview.Size = UDim2.fromOffset(80, 80)
-    preview.Position = UDim2.fromOffset(15, 15)
-    preview.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-    preview.BackgroundTransparency = 0.6
-    
-    if isRemote then
-        preview.Image = "rbxasset://textures/Debugger/Breakpoints/disabled_valid.png"
-    elseif obj:IsA("Sound") then
-        preview.Image = "rbxasset://textures/Volume.png"
+    local preview
+    if obj:IsA("Animation") then
+        -- use a viewport frame for live animations
+        preview = Instance.new("ViewportFrame")
+        preview.Size = UDim2.fromOffset(80, 80)
+        preview.Position = UDim2.fromOffset(15, 15)
+        preview.BackgroundColor3 = Color3.fromRGB(5, 5, 8)
+        preview.BackgroundTransparency = 0.3
+        
+        local worldModel = Instance.new("WorldModel")
+        worldModel.Parent = preview
+        
+        local vpCamera = Instance.new("Camera")
+        preview.CurrentCamera = vpCamera
+        vpCamera.Parent = preview
+        
+        task.spawn(function()
+            local playerChar = player.Character or player.CharacterAdded:Wait()
+            if playerChar then
+                playerChar.Archivable = true
+                local rigClone = playerChar:Clone()
+                playerChar.Archivable = false
+                
+                for _, desc in ipairs(rigClone:GetDescendants()) do
+                    if desc:IsA("LuaSourceContainer") or desc:IsA("Script") or desc:IsA("LocalScript") then
+                        desc:Destroy()
+                    end
+                end
+                
+                rigClone.Parent = worldModel
+                local hrp = rigClone:FindFirstChild("HumanoidRootPart")
+                local humanoid = rigClone:FindFirstChildOfClass("Humanoid")
+                
+                if hrp and humanoid then
+                    hrp.CFrame = CFrame.new(0, 0, 0)
+                    -- tight camera zoom for the tiny 80x80 card window
+                    vpCamera.CFrame = CFrame.new(Vector3.new(0, 1.5, -4.5), hrp.Position + Vector3.new(0, 0.2, 0))
+                    
+                    local animator = humanoid:FindFirstChildOfClass("Animator") or Instance.new("Animator", humanoid)
+                    local animObj = Instance.new("Animation")
+                    animObj.AnimationId = "rbxassetid://" .. tostring(assetId)
+                    
+                    -- tiny delay allows the viewport and joints to awake properly
+                    task.wait(0.1) 
+                    local success, track = pcall(function() return animator:LoadAnimation(animObj) end)
+                    if success and track then
+                        track.Looped = true
+                        track:Play()
+                    end
+                end
+            end
+        end)
     else
-        preview.Image = image
+        -- fallback to imagelabel for standard assets
+        preview = Instance.new("ImageLabel")
+        preview.Size = UDim2.fromOffset(80, 80)
+        preview.Position = UDim2.fromOffset(15, 15)
+        preview.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+        preview.BackgroundTransparency = 0.6
+        
+        if isRemote then
+            preview.Image = "rbxasset://textures/Debugger/Breakpoints/disabled_valid.png"
+        elseif obj:IsA("Sound") then
+            preview.Image = "rbxasset://textures/Volume.png"
+        else
+            preview.Image = image
+        end
     end
     
     preview.Parent = container
@@ -778,10 +1025,19 @@ local function createEntry(obj, image)
 		s.Color = Color3.fromRGB(255,255,255)
 		s.Transparency = 0.9
 
-		return b
-	end
+        return b
+    end
 
     local copyPathBtn = createEntryButton("copy path", 10)
+    copyPathBtn.MouseButton1Click:Connect(function()
+        if setclipboard then 
+            local rawPath = obj:GetFullName()
+            local cleanPath = string.gsub(rawPath, "%s+%.", ".") 
+            
+            setclipboard(cleanPath) 
+            notify("path copied and cleaned!") 
+        end
+    end)
     
     if isRemote then
         local executeBtn = createEntryButton("execute", 1, bottomTray)
@@ -807,17 +1063,21 @@ local function createEntry(obj, image)
             if setclipboard then setclipboard(assetId) notify("id copied!") end
         end)
 
-		local copyNameBtn = createEntryButton("copy name", 5)
-		copyNameBtn.MouseButton1Click:Connect(function()
-			if setclipboard then
-				setclipboard(obj.Name)
-				notify("full name copied!")
-			end
-		end)
+        local copyNameBtn = createEntryButton("copy name", 5)
+        copyNameBtn.MouseButton1Click:Connect(function()
+            if setclipboard then
+                setclipboard(obj.Name)
+                notify("full name copied!")
+            end
+        end)
 
         local previewBtn = createEntryButton("preview", 1, bottomTray)
         previewBtn.MouseButton1Click:Connect(function()
-            previewImagePopup(preview.Image, obj.Name)
+            if obj:IsA("Animation") then
+                previewAnimationPopup(assetId, obj.Name)
+            else
+                previewImagePopup(preview.Image, obj.Name)
+            end
         end)
         
         local saveImgBtn = createEntryButton("save img", 4)
@@ -1153,6 +1413,7 @@ local categories = {
     "Mesh",
     "Sky",
     "Sound",
+    "Animation",
     "Remotes",
     "Video",
     "Handles"
@@ -1205,5 +1466,17 @@ for _, cat in ipairs(categories) do
         end
     end)
 end
+
+usageBtn.MouseButton1Click:Connect(function()
+    local usages = getAssetUsage(asset.AssetId)
+
+    local text = ""
+
+    for _, usage in ipairs(usages) do
+        text ..= usage.Path .. "\n"
+    end
+
+    showUsageWindow(asset.AssetId, text)
+end)
 
 updateCategoryTabLabels()
