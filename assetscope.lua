@@ -1035,7 +1035,7 @@ local function createEntry(obj, image)
             local cleanPath = string.gsub(rawPath, "%s+%.", ".") 
             
             setclipboard(cleanPath) 
-            notify("path copied and cleaned!") 
+            notify("path copied!") 
         end
     end)
     
@@ -1217,11 +1217,7 @@ local function createEntry(obj, image)
             end
         end)
     end
-
-    copyPathBtn.MouseButton1Click:Connect(function()
-        if setclipboard then setclipboard(obj:GetFullName()) notify("path copied!") end
-    end)
-
+	
     local category = getCategory(obj)
     
     categoryCounts.All = categoryCounts.All + 1
