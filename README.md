@@ -10,7 +10,7 @@
 
 <p align="center">
   <b>Example of Asset Scope in Murder Mystery 2</b>
-  <img src="https://raw.githubusercontent.com/squidward5/asset-scope/refs/heads/main/mm2%20example.png" width="700">
+  <img src="https://raw.githubusercontent.com/squidward5/asset-scope/refs/heads/main/rivals%20example.png" width="700">
 </p>
 
 ## Loadstring
