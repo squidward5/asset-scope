@@ -49,6 +49,7 @@ Whether you're researching assets, inspecting game resources, locating UI elemen
 - 🎨 SurfaceAppearance support
 - 🌌 Skybox support
 - 🔊 Sound support
+- 🤸‍♂️ Animation support
 - 🎬 Video support
 
 ---
@@ -76,6 +77,7 @@ Asset Scope scans:
 - RemoteEvent
 - RemoteFunction
 - EditableImage
+- Animation
 
 ## Requirements
 
