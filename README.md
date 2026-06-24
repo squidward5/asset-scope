@@ -92,4 +92,4 @@ Your executor must support:
 - getcustomasset
 - setclipboard (optional)
 
-Executors such as Potassium, Volt, and other high UNC & sUNC should work fine.
+Executors such as Potassium, Volt, Xeno, and other executors that support these requirements should work fine.
