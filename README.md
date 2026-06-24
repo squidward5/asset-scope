@@ -25,6 +25,7 @@
 ```lua
 loadstring(game:HttpGet("https://raw.githubusercontent.com/squidward5/asset-scope/refs/heads/main/assetscope.lua"))()
 ```
+-# Performance may be degraded if there is an extreme amount of assets.
 
 ---
 
